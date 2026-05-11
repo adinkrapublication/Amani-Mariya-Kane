@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>References & Notes — The Swiss Illusion — Adinkra Publication</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #C41E1E;
+  --gold: #B8892A;
+  --dark: #0E0E0E;
+  --charcoal: #181818;
+  --card: #1C1C1C;
+  --cream: #F2EDE3;
+  --muted: #6B6B6B;
+  --border: rgba(184,137,42,0.18);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  background: var(--dark); color: var(--cream);
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--gold); }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 4rem;
+  background: rgba(14,14,14,0.96);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+.nav-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); text-decoration: none;
+}
+.nav-back {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--muted);
+  text-decoration: none; transition: color 0.25s;
+}
+.nav-back:hover { color: var(--cream); }
+
+/* HEADER */
+.page-header {
+  padding: 8rem 5rem 3rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--charcoal);
+}
+.page-header .tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.22em;
+  color: var(--red); text-transform: uppercase; margin-bottom: 0.8rem;
+}
+.page-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem; font-weight: 900; line-height: 1.1;
+  margin-bottom: 0.8rem;
+}
+.page-header h1 em { color: var(--gold); font-style: italic; }
+.page-header p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; font-style: italic;
+  color: var(--muted); max-width: 640px; line-height: 1.7;
+}
+
+/* CONTROLS */
+.controls {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+  padding: 1.5rem 5rem;
+  background: var(--charcoal);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 57px; z-index: 100;
+}
+
+.search-wrap {
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.search-wrap input {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  color: var(--cream);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.1em;
+  padding: 0.6rem 1rem;
+  width: 280px; outline: none;
+  transition: border-color 0.25s;
+}
+.search-wrap input::placeholder { color: var(--muted); }
+.search-wrap input:focus { border-color: var(--gold); }
+
+.filter-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.filter-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem; letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 0.45rem 0.9rem;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--red); color: white; border-color: var(--red);
+}
+
+.ref-count {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.1em; color: var(--muted);
+}
+.ref-count span { color: var(--gold); }
+
+/* TABLE */
+.table-wrap { padding: 2rem 5rem 5rem; }
+
+table { width: 100%; border-collapse: collapse; }
+
+thead tr {
+  border-bottom: 2px solid var(--gold);
+}
+thead th {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold);
+  padding: 0.8rem 1rem; text-align: left;
+}
+th:first-child { width: 60px; text-align: center; }
+th:last-child { width: 200px; text-align: center; }
+
+.ref-row {
+  border-bottom: 1px solid rgba(184,137,42,0.08);
+  transition: background 0.2s;
+}
+.ref-row:hover { background: rgba(184,137,42,0.04); }
+
+.ref-row td {
+  padding: 1.2rem 1rem; vertical-align: top;
+}
+
+.ref-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--red); text-align: center;
+}
+
+.ref-category {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem; letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 0.2rem 0.5rem;
+  border: 1px solid; margin-bottom: 0.5rem;
+}
+.cat-un { color: #4A9ECC; border-color: #4A9ECC; }
+.cat-greco { color: #B8892A; border-color: #B8892A; }
+.cat-echr { color: #8B5CF6; border-color: #8B5CF6; }
+.cat-academic { color: #10B981; border-color: #10B981; }
+.cat-civil { color: #F59E0B; border-color: #F59E0B; }
+.cat-press { color: #EC4899; border-color: #EC4899; }
+.cat-legal { color: #C41E1E; border-color: #C41E1E; }
+
+.ref-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; font-weight: 600;
+  color: var(--cream); margin-bottom: 0.3rem; line-height: 1.4;
+}
+.ref-author {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem; font-style: italic;
+  color: var(--muted); margin-bottom: 0.4rem;
+}
+.ref-info {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem; color: var(--muted);
+  letter-spacing: 0.05em; margin-bottom: 0.5rem;
+}
+.ref-url {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem; color: var(--gold);
+  text-decoration: none; letter-spacing: 0.03em;
+  word-break: break-all; transition: color 0.2s;
+}
+.ref-url:hover { color: var(--cream); text-decoration: underline; }
+
+.ref-links { display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+
+.link-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem; letter-spacing: 0.1em;
+  text-transform: uppercase; text-decoration: none;
+  padding: 0.4rem 0.8rem; border: 1px solid;
+  transition: all 0.2s; white-space: nowrap;
+}
+.link-web { color: var(--gold); border-color: rgba(184,137,42,0.4); }
+.link-web:hover { background: var(--gold); color: var(--dark); }
+.link-pdf { color: #C41E1E; border-color: rgba(196,30,30,0.4); }
+.link-pdf:hover { background: var(--red); color: white; }
+
+/* SECTION DIVIDERS */
+.section-divider {
+  background: var(--charcoal);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0.8rem 5rem;
+  margin: 1rem 0;
+}
+.section-divider span {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 700;
+  color: var(--gold);
+}
+
+/* HIDDEN */
+.hidden { display: none; }
+
+/* FOOTER */
+footer {
+  background: #080808;
+  border-top: 1px solid var(--border);
+  padding: 2rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-name { font-family: 'Playfair Display', serif; font-size: 0.8rem; color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase; }
+.footer-twi { font-family: 'Cormorant Garamond', serif; font-size: 0.8rem; font-style: italic; color: var(--muted); }
+.footer-copy { font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; color: #333; }
+
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .page-header { padding: 7rem 1.5rem 2rem; }
+  .page-header h1 { font-size: 1.8rem; }
+  .controls { padding: 1rem 1.5rem; }
+  .search-wrap input { width: 200px; }
+  .table-wrap { padding: 1.5rem 1.5rem 4rem; }
+  .section-divider { padding: 0.8rem 1.5rem; }
+  th:last-child, td:last-child { display: none; }
+  footer { flex-direction: column; text-align: center; padding: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="adinkra_website_final.html" class="nav-brand">Adinkra Publication</a>
+  <a href="adinkra_website_final.html" class="nav-back">← Back to Main Site</a>
+</nav>
+
+<div class="page-header">
+  <div class="tag">The Swiss Illusion</div>
+  <h1>Notes, References <em>&amp; Sources</em></h1>
+  <p>All references cited in the book — with direct links to original sources, institutional reports, and downloadable documents where available.</p>
+</div>
+
+<div class="controls">
+  <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;">
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Search references..." oninput="filterRefs()">
+    </div>
+    <div class="filter-btns">
+      <button class="filter-btn active" onclick="filterCat('all', this)">All</button>
+      <button class="filter-btn" onclick="filterCat('un', this)">UN</button>
+      <button class="filter-btn" onclick="filterCat('greco', this)">GRECO</button>
+      <button class="filter-btn" onclick="filterCat('echr', this)">ECHR</button>
+      <button class="filter-btn" onclick="filterCat('academic', this)">Academic</button>
+      <button class="filter-btn" onclick="filterCat('civil', this)">Civil Society</button>
+      <button class="filter-btn" onclick="filterCat('press', this)">Press</button>
+      <button class="filter-btn" onclick="filterCat('legal', this)">Legal</button>
+    </div>
+  </div>
+  <div class="ref-count">Showing <span id="visibleCount">67</span> of <span>67</span> references</div>
+</div>
+
+<div class="table-wrap">
+<table id="refTable">
+<thead>
+  <tr>
+    <th>N°</th>
+    <th>Reference</th>
+    <th>Links</th>
+  </tr>
+</thead>
+<tbody>
+
+<!-- ═══ UN ═══ -->
+<tr><td colspan="3" style="padding:0;">
+  <div class="section-divider"><span>🌐 United Nations & International Bodies</span></div>
+</td></tr>
+
+<tr class="ref-row" data-cat="un" data-text="united nations working group people african descent switzerland 2022">
+  <td class="ref-num">1</td>
+  <td>
+    <span class="ref-category cat-un">UN</span>
+    <div class="ref-title">Statement on the conclusion of its official visit to Switzerland</div>
+    <div class="ref-author">UN Working Group of Experts on People of African Descent</div>
+    <div class="ref-info">OHCHR · Geneva · January 2022</div>
+    <a href="https://www.ohchr.org/en/press-releases/2022/01/switzerland-must-urgently-confront-anti-black-racism-say-un-experts" target="_blank" class="ref-url">ohchr.org — Switzerland must urgently confront anti-Black racism</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.ohchr.org/en/press-releases/2022/01/switzerland-must-urgently-confront-anti-black-racism-say-un-experts" target="_blank" class="link-btn link-web">🔗 View Online</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="un" data-text="CERD committee elimination racial discrimination switzerland 2021">
+  <td class="ref-num">2</td>
+  <td>
+    <span class="ref-category cat-un">UN · CERD</span>
+    <div class="ref-title">Concluding observations on the combined 17th to 19th periodic reports of Switzerland</div>
+    <div class="ref-author">UN Committee on the Elimination of Racial Discrimination (CERD)</div>
+    <div class="ref-info">CERD/C/CHE/CO/17-19 · 2021</div>
+    <a href="https://tbinternet.ohchr.org/_layouts/15/treatybodyexternal/Download.aspx?symbolno=CERD/C/CHE/CO/17-19&Lang=En" target="_blank" class="ref-url">tbinternet.ohchr.org — CERD/C/CHE/CO/17-19</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://tbinternet.ohchr.org/_layouts/15/treatybodyexternal/Download.aspx?symbolno=CERD/C/CHE/CO/17-19&Lang=En" target="_blank" class="link-btn link-pdf">📄 PDF</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="un" data-text="OHCHR universal periodic review switzerland racial profiling">
+  <td class="ref-num">3</td>
+  <td>
+    <span class="ref-category cat-un">UN · UPR</span>
+    <div class="ref-title">Universal Periodic Review — Switzerland: Racial Profiling and Police Violence</div>
+    <div class="ref-author">Office of the High Commissioner for Human Rights (OHCHR)</div>
+    <div class="ref-info">Geneva · 2022–2023</div>
+    <a href="https://www.ohchr.org/en/hr-bodies/upr/ch-index" target="_blank" class="ref-url">ohchr.org/en/hr-bodies/upr/ch-index</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.ohchr.org/en/hr-bodies/upr/ch-index" target="_blank" class="link-btn link-web">🔗 View Online</a>
+    </div>
+  </td>
+</tr>
+
+<!-- ═══ GRECO ═══ -->
+<tr><td colspan="3" style="padding:0;">
+  <div class="section-divider"><span>⚖️ GRECO — Group of States against Corruption</span></div>
+</td></tr>
+
+<tr class="ref-row" data-cat="greco" data-text="GRECO fourth evaluation round switzerland corruption judges prosecutors 2020">
+  <td class="ref-num">4</td>
+  <td>
+    <span class="ref-category cat-greco">GRECO</span>
+    <div class="ref-title">Fourth Evaluation Round — Corruption Prevention in respect of Members of Parliament, Judges and Prosecutors: Report on Switzerland</div>
+    <div class="ref-author">Group of States against Corruption (GRECO), Council of Europe</div>
+    <div class="ref-info">Strasbourg · 2020</div>
+    <a href="https://www.coe.int/en/web/greco/evaluations/switzerland" target="_blank" class="ref-url">coe.int/en/web/greco/evaluations/switzerland</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.coe.int/en/web/greco/evaluations/switzerland" target="_blank" class="link-btn link-web">🔗 View Online</a>
+      <a href="https://rm.coe.int/fourth-evaluation-round-corruption-prevention-in-respect-of-members-of/16809e24e6" target="_blank" class="link-btn link-pdf">📄 PDF</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="greco" data-text="GRECO second compliance report switzerland 2022">
+  <td class="ref-num">5</td>
+  <td>
+    <span class="ref-category cat-greco">GRECO</span>
+    <div class="ref-title">Fourth Evaluation Round — Second Compliance Report on Switzerland</div>
+    <div class="ref-author">Group of States against Corruption (GRECO), Council of Europe</div>
+    <div class="ref-info">Strasbourg · 2022</div>
+    <a href="https://www.coe.int/en/web/greco/evaluations/switzerland" target="_blank" class="ref-url">coe.int/en/web/greco/evaluations/switzerland</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.coe.int/en/web/greco/evaluations/switzerland" target="_blank" class="link-btn link-web">🔗 View Online</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="greco" data-text="GRECO fifth evaluation round switzerland 2024">
+  <td class="ref-num">6</td>
+  <td>
+    <span class="ref-category cat-greco">GRECO</span>
+    <div class="ref-title">Fifth Evaluation Round — Report on Switzerland</div>
+    <div class="ref-author">Group of States against Corruption (GRECO), Council of Europe</div>
+    <div class="ref-info">Strasbourg · 2024</div>
+    <a href="https://www.coe.int/en/web/greco/evaluations/switzerland" target="_blank" class="ref-url">coe.int/en/web/greco/evaluations/switzerland</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.coe.int/en/web/greco/evaluations/switzerland" target="_blank" class="link-btn link-web">🔗 View Online</a>
+    </div>
+  </td>
+</tr>
+
+<!-- ═══ ECHR ═══ -->
+<tr><td colspan="3" style="padding:0;">
+  <div class="section-divider"><span>🏛️ European Court of Human Rights</span></div>
+</td></tr>
+
+<tr class="ref-row" data-cat="echr" data-text="Wa Baile Switzerland ECHR 2024 racial profiling Zurich">
+  <td class="ref-num">7</td>
+  <td>
+    <span class="ref-category cat-echr">ECHR</span>
+    <div class="ref-title">Wa Baile v. Switzerland — Racial discrimination and absence of effective remedy</div>
+    <div class="ref-author">European Court of Human Rights · Applications nos. 43868/18 and 25883/21</div>
+    <div class="ref-info">Chamber judgment · 20 February 2024 · Unanimous condemnation</div>
+    <a href="https://hudoc.echr.coe.int/eng?i=001-231645" target="_blank" class="ref-url">hudoc.echr.coe.int — Wa Baile v. Switzerland</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://hudoc.echr.coe.int/eng?i=001-231645" target="_blank" class="link-btn link-web">🔗 View Online</a>
+      <a href="https://hudoc.echr.coe.int/eng?i=001-231645" target="_blank" class="link-btn link-pdf">📄 PDF</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="echr" data-text="Nejjar Switzerland ECHR 2025 access court fees">
+  <td class="ref-num">8</td>
+  <td>
+    <span class="ref-category cat-echr">ECHR</span>
+    <div class="ref-title">Nejjar v. Switzerland — Violation of Article 6 §1 (right of access to a court)</div>
+    <div class="ref-author">European Court of Human Rights</div>
+    <div class="ref-info">2025 · Advance fees — inadmissibility</div>
+    <a href="https://hudoc.echr.coe.int" target="_blank" class="ref-url">hudoc.echr.coe.int</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://hudoc.echr.coe.int" target="_blank" class="link-btn link-web">🔗 HUDOC</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="echr" data-text="Wettstein Switzerland ECHR 2000 impartiality judge lawyer">
+  <td class="ref-num">9</td>
+  <td>
+    <span class="ref-category cat-echr">ECHR</span>
+    <div class="ref-title">Wettstein v. Switzerland — Impartiality: judge sitting in case involving opposing counsel from his own law firm</div>
+    <div class="ref-author">European Court of Human Rights · Application no. 33958/96</div>
+    <div class="ref-info">2000</div>
+    <a href="https://hudoc.echr.coe.int/eng?i=001-58792" target="_blank" class="ref-url">hudoc.echr.coe.int — Wettstein v. Switzerland</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://hudoc.echr.coe.int/eng?i=001-58792" target="_blank" class="link-btn link-web">🔗 View Online</a>
+    </div>
+  </td>
+</tr>
+
+<!-- ═══ ACADEMIC ═══ -->
+<tr><td colspan="3" style="padding:0;">
+  <div class="section-divider"><span>📚 Academic Research</span></div>
+</td></tr>
+
+<tr class="ref-row" data-cat="academic" data-text="Lienhard Kettiger twenty years research Swiss justice system IACA 2024">
+  <td class="ref-num">10</td>
+  <td>
+    <span class="ref-category cat-academic">Academic · IACA</span>
+    <div class="ref-title">Twenty Years of Research Into the Swiss Justice System</div>
+    <div class="ref-author">Andreas Lienhard &amp; Daniel Kettiger — KPM Center, University of Bern</div>
+    <div class="ref-info">International Journal for Court Administration (IACA) · 2024</div>
+    <a href="https://iacajournal.org/en" target="_blank" class="ref-url">iacajournal.org</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://iacajournal.org/en" target="_blank" class="link-btn link-web">🔗 View Online</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="academic" data-text="Kiener richterliche unabhängigkeit judicial independence Switzerland Bern 2001">
+  <td class="ref-num">11</td>
+  <td>
+    <span class="ref-category cat-academic">Academic</span>
+    <div class="ref-title">Richterliche Unabhängigkeit — Verfassungsrechtliche Anforderungen an Richter und Gerichte</div>
+    <div class="ref-author">Regina Kiener — University of Bern / University of Zurich</div>
+    <div class="ref-info">Stämpfli Verlag, Bern · 2001 · ISBN 978-3-7272-9406-8</div>
+    <a href="https://www.staempfliverlag.com" target="_blank" class="ref-url">staempfliverlag.com</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.staempfliverlag.com" target="_blank" class="link-btn link-web">🔗 Publisher</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="academic" data-text="CEPEJ European Commission efficiency justice Switzerland 2024 evaluation">
+  <td class="ref-num">12</td>
+  <td>
+    <span class="ref-category cat-academic">Academic · CEPEJ</span>
+    <div class="ref-title">European Judicial Systems — Evaluation Report 2024 (2022 Data)</div>
+    <div class="ref-author">European Commission for the Efficiency of Justice (CEPEJ), Council of Europe</div>
+    <div class="ref-info">Strasbourg · 16 October 2024 · 10th biennial evaluation</div>
+    <a href="https://www.coe.int/en/web/cepej/evaluation-of-judicial-systems" target="_blank" class="ref-url">coe.int/en/web/cepej</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.coe.int/en/web/cepej/evaluation-of-judicial-systems" target="_blank" class="link-btn link-web">🔗 View Online</a>
+      <a href="https://rm.coe.int/cepej-report-2024/1680afb48b" target="_blank" class="link-btn link-pdf">📄 PDF</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="academic" data-text="Gertsch richterliche unabhängigkeit Bundesverwaltungsgericht quantitative Studie 2021">
+  <td class="ref-num">13</td>
+  <td>
+    <span class="ref-category cat-academic">Academic</span>
+    <div class="ref-title">Richterliche Unabhängigkeit und Konsistenz am Bundesverwaltungsgericht: eine quantitative Studie</div>
+    <div class="ref-author">Gabriel Gertsch</div>
+    <div class="ref-info">Schweizerisches Zentralblatt für Staats- und Verwaltungsrecht 1/2021, p. 34 ff.</div>
+    <a href="https://www.zbl.ch" target="_blank" class="ref-url">zbl.ch</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.zbl.ch" target="_blank" class="link-btn link-web">🔗 Journal</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="academic" data-text="Macpherson Stephen Lawrence Inquiry institutional racism UK 1999">
+  <td class="ref-num">14</td>
+  <td>
+    <span class="ref-category cat-academic">Academic · Legal</span>
+    <div class="ref-title">The Stephen Lawrence Inquiry: Report of an Inquiry — Cm 4262-I</div>
+    <div class="ref-author">Sir William Macpherson</div>
+    <div class="ref-info">London: HMSO · February 1999 · Defines institutional racism</div>
+    <a href="https://assets.publishing.service.gov.uk/media/5a7c2af540f0b645ba3c7202/4262.pdf" target="_blank" class="ref-url">publishing.service.gov.uk — Macpherson Report PDF</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://assets.publishing.service.gov.uk/media/5a7c2af540f0b645ba3c7202/4262.pdf" target="_blank" class="link-btn link-pdf">📄 PDF</a>
+    </div>
+  </td>
+</tr>
+
+<!-- ═══ CIVIL SOCIETY ═══ -->
+<tr><td colspan="3" style="padding:0;">
+  <div class="section-divider"><span>✊ Civil Society &amp; Human Rights Organisations</span></div>
+</td></tr>
+
+<tr class="ref-row" data-cat="civil" data-text="JUSO JS Suisse justice injustice thèses système judiciaire 2024">
+  <td class="ref-num">15</td>
+  <td>
+    <span class="ref-category cat-civil">Civil Society</span>
+    <div class="ref-title">De la justice et de l'injustice — Thèses sur le système judiciaire</div>
+    <div class="ref-author">Jeunesse Socialiste Suisse (JUSO / JS Suisse)</div>
+    <div class="ref-info">Position paper · 2024</div>
+    <a href="https://juso.ch/media/downloads/Justiz_FINAL_FR.pdf" target="_blank" class="ref-url">juso.ch/media/downloads/Justiz_FINAL_FR.pdf</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://juso.ch/media/downloads/Justiz_FINAL_FR.pdf" target="_blank" class="link-btn link-pdf">📄 PDF</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="civil" data-text="Amnesty International Switzerland Wa Baile racial profiling 2024">
+  <td class="ref-num">16</td>
+  <td>
+    <span class="ref-category cat-civil">Civil Society · Amnesty</span>
+    <div class="ref-title">Switzerland: Mohamed Wa Baile Wins Ethnic Profiling Case — ECHR Unanimously Condemns Racial Discrimination</div>
+    <div class="ref-author">Amnesty International Switzerland</div>
+    <div class="ref-info">Press release · 4 March 2024</div>
+    <a href="https://www.amnesty.ch/fr/a-propos/organisation/amnesty-suisse/news/2024/suisse-un-citoyen-noir-suisse-gagne-son-cas-de-profilage-ethnique" target="_blank" class="ref-url">amnesty.ch — Wa Baile case</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.amnesty.ch" target="_blank" class="link-btn link-web">🔗 View Online</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="civil" data-text="Amnesty International Switzerland annual report 2024 racial profiling">
+  <td class="ref-num">17</td>
+  <td>
+    <span class="ref-category cat-civil">Civil Society · Amnesty</span>
+    <div class="ref-title">The State of the World's Human Rights: Switzerland 2024</div>
+    <div class="ref-author">Amnesty International</div>
+    <div class="ref-info">Annual report · 2024</div>
+    <a href="https://www.amnesty.org/en/location/europe-and-central-asia/western-central-and-south-east-europe/switzerland/report-switzerland/" target="_blank" class="ref-url">amnesty.org — Switzerland report 2024</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.amnesty.org/en/location/europe-and-central-asia/western-central-and-south-east-europe/switzerland/report-switzerland/" target="_blank" class="link-btn link-web">🔗 View Online</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="civil" data-text="Commission fédérale contre le racisme CFR EKR Switzerland annual report">
+  <td class="ref-num">18</td>
+  <td>
+    <span class="ref-category cat-civil">Civil Society</span>
+    <div class="ref-title">Annual Reports on Racism and Discrimination in Switzerland</div>
+    <div class="ref-author">Commission fédérale contre le racisme (CFR / EKR)</div>
+    <div class="ref-info">Berne · Annual publication</div>
+    <a href="https://www.ekr.admin.ch" target="_blank" class="ref-url">ekr.admin.ch</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.ekr.admin.ch" target="_blank" class="link-btn link-web">🔗 View Online</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="civil" data-text="stop racial profiling Switzerland police judicial">
+  <td class="ref-num">19</td>
+  <td>
+    <span class="ref-category cat-civil">Civil Society</span>
+    <div class="ref-title">Le profilage raciste en Suisse — Définition, documentation et campagne</div>
+    <div class="ref-author">stop-racial-profiling.ch — Civil society platform</div>
+    <div class="ref-info">Switzerland</div>
+    <a href="https://stop-racial-profiling.ch" target="_blank" class="ref-url">stop-racial-profiling.ch</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://stop-racial-profiling.ch" target="_blank" class="link-btn link-web">🔗 View Online</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="civil" data-text="Initiative justice indépendante tirage au sort juges 2021 Suisse">
+  <td class="ref-num">20</td>
+  <td>
+    <span class="ref-category cat-civil">Civil Society · Political</span>
+    <div class="ref-title">Initiative populaire fédérale 'Pour une justice indépendante' — Campaign documentation and voting results</div>
+    <div class="ref-author">Initiative committee · Karin Stadelmann, member</div>
+    <div class="ref-info">November 2021 · Rejected 68.9% / 31.1%</div>
+    <a href="https://www.admin.ch/gov/fr/accueil/documentation/votations/20211128/initiative-justice.html" target="_blank" class="ref-url">admin.ch — Initiative sur la justice 2021</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.admin.ch/gov/fr/accueil/documentation/votations/20211128/initiative-justice.html" target="_blank" class="link-btn link-web">🔗 View Online</a>
+    </div>
+  </td>
+</tr>
+
+<!-- ═══ PRESS ═══ -->
+<tr><td colspan="3" style="padding:0;">
+  <div class="section-divider"><span>📰 Press &amp; Media Sources</span></div>
+</td></tr>
+
+<tr class="ref-row" data-cat="press" data-text="Stadelmann Karin problème systémique justice suisse Swissinfo 2021">
+  <td class="ref-num">21</td>
+  <td>
+    <span class="ref-category cat-press">Press · Swissinfo</span>
+    <div class="ref-title">"Nous avons un problème systémique avec la justice suisse"</div>
+    <div class="ref-author">Karin Stadelmann, interviewed by Giannis Mavris</div>
+    <div class="ref-info">Swissinfo.ch · 23 October 2021</div>
+    <a href="https://www.swissinfo.ch/fre/politique/la-suisse-a-t-elle-un-probl%C3%A8me-avec-son-syst%C3%A8me-judiciaire-/47004664" target="_blank" class="ref-url">swissinfo.ch — Interview Karin Stadelmann</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.swissinfo.ch/fre/politique/la-suisse-a-t-elle-un-probl%C3%A8me-avec-son-syst%C3%A8me-judiciaire-/47004664" target="_blank" class="link-btn link-web">🔗 View Online</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="press" data-text="RTS Temps Présent juge partisan 2024">
+  <td class="ref-num">22</td>
+  <td>
+    <span class="ref-category cat-press">Press · RTS</span>
+    <div class="ref-title">"Mon juge est-il partisan?" — Documentary investigation</div>
+    <div class="ref-author">RTS Temps Présent</div>
+    <div class="ref-info">RTS · 21 November 2024 · 48 min.</div>
+    <a href="https://www.rts.ch/play/tv/temps-present/video/mon-juge-est-il-partisan" target="_blank" class="ref-url">rts.ch — Mon juge est-il partisan?</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.rts.ch/play/tv/temps-present/video/mon-juge-est-il-partisan" target="_blank" class="link-btn link-web">🔗 View Online</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="press" data-text="RTS juges suisses paient millions francs parti 2024">
+  <td class="ref-num">23</td>
+  <td>
+    <span class="ref-category cat-press">Press · RTS</span>
+    <div class="ref-title">"Les juges suisses paient entre 2,5 et 3 millions de francs à leur parti"</div>
+    <div class="ref-author">RTS Temps Présent</div>
+    <div class="ref-info">RTS · 22 November 2024</div>
+    <a href="https://www.rts.ch" target="_blank" class="ref-url">rts.ch</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.rts.ch" target="_blank" class="link-btn link-web">🔗 RTS</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="press" data-text="Le Temps conseil magistrature juges fédéraux Mansour 2024">
+  <td class="ref-num">24</td>
+  <td>
+    <span class="ref-category cat-press">Press · Le Temps</span>
+    <div class="ref-title">"Un conseil de la magistrature pour veiller à la discipline des juges fédéraux?"</div>
+    <div class="ref-author">Fati Mansour</div>
+    <div class="ref-info">Le Temps · 24 October 2024</div>
+    <a href="https://www.letemps.ch" target="_blank" class="ref-url">letemps.ch</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.letemps.ch" target="_blank" class="link-btn link-web">🔗 Le Temps</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="press" data-text="NZZ juges pression politique 12 témoignages 2024">
+  <td class="ref-num">25</td>
+  <td>
+    <span class="ref-category cat-press">Press · NZZ</span>
+    <div class="ref-title">"«Der Partei ausgeliefert»: Zwölf Richter reden offen über politischen Druck"</div>
+    <div class="ref-author">Neue Zürcher Zeitung (NZZ)</div>
+    <div class="ref-info">NZZ · 2024</div>
+    <a href="https://www.nzz.ch" target="_blank" class="ref-url">nzz.ch</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.nzz.ch" target="_blank" class="link-btn link-web">🔗 NZZ</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="press" data-text="Swissinfo sanctionner juges comportement fautif 2025">
+  <td class="ref-num">26</td>
+  <td>
+    <span class="ref-category cat-press">Press · Swissinfo</span>
+    <div class="ref-title">"Sanctionner les juges suisses en cas de comportement fautif"</div>
+    <div class="ref-author">Swissinfo.ch</div>
+    <div class="ref-info">Swissinfo · 24 January 2025</div>
+    <a href="https://www.swissinfo.ch" target="_blank" class="ref-url">swissinfo.ch</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.swissinfo.ch" target="_blank" class="link-btn link-web">🔗 Swissinfo</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="press" data-text="Sonntagszeitung beamten strafe davon 2018">
+  <td class="ref-num">27</td>
+  <td>
+    <span class="ref-category cat-press">Press · Sonntagszeitung</span>
+    <div class="ref-title">"Die meisten Beamten kommen ohne Strafe davon"</div>
+    <div class="ref-author">Sonntagszeitung</div>
+    <div class="ref-info">1 June 2018</div>
+    <a href="https://www.sonntagszeitung.ch" target="_blank" class="ref-url">sonntagszeitung.ch</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.sonntagszeitung.ch" target="_blank" class="link-btn link-web">🔗 Sonntagszeitung</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="press" data-text="Le Courrier viol seconde instance cinq ans 2026">
+  <td class="ref-num">28</td>
+  <td>
+    <span class="ref-category cat-press">Press · Le Courrier</span>
+    <div class="ref-title">"Affaire de viol bloquée en seconde instance — plus de cinq ans sans épilogue"</div>
+    <div class="ref-author">Le Courrier</div>
+    <div class="ref-info">26 March 2026</div>
+    <a href="https://www.lecourrier.ch" target="_blank" class="ref-url">lecourrier.ch</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.lecourrier.ch" target="_blank" class="link-btn link-web">🔗 Le Courrier</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="press" data-text="Felber Von Bankerin Sozialfall NZZ 2019">
+  <td class="ref-num">29</td>
+  <td>
+    <span class="ref-category cat-press">Press · NZZ</span>
+    <div class="ref-title">"Von Bankerin zum Sozialfall"</div>
+    <div class="ref-author">Tom Felber</div>
+    <div class="ref-info">Neue Zürcher Zeitung · 29 August 2019</div>
+    <a href="https://www.nzz.ch" target="_blank" class="ref-url">nzz.ch</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.nzz.ch" target="_blank" class="link-btn link-web">🔗 NZZ</a>
+    </div>
+  </td>
+</tr>
+
+<!-- ═══ LEGAL ═══ -->
+<tr><td colspan="3" style="padding:0;">
+  <div class="section-divider"><span>⚖️ Legal Cases &amp; Official Documents</span></div>
+</td></tr>
+
+<tr class="ref-row" data-cat="legal" data-text="Tribunal fédéral ATF 116 Ia 359 droit de vote femmes Appenzell 1990">
+  <td class="ref-num">30</td>
+  <td>
+    <span class="ref-category cat-legal">Legal · ATF</span>
+    <div class="ref-title">ATF 116 Ia 359 — Droit de vote des femmes, Appenzell Innerrhoden</div>
+    <div class="ref-author">Swiss Federal Tribunal (Tribunal fédéral suisse)</div>
+    <div class="ref-info">27 November 1990</div>
+    <a href="https://www.bger.ch" target="_blank" class="ref-url">bger.ch — Swiss Federal Tribunal</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.bger.ch" target="_blank" class="link-btn link-web">🔗 Tribunal fédéral</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="legal" data-text="Office fédéral justice OFJ statistiques délais procédures pénales 2025">
+  <td class="ref-num">31</td>
+  <td>
+    <span class="ref-category cat-legal">Legal · OFJ</span>
+    <div class="ref-title">Statistiques judiciaires — délais moyens de traitement des affaires pénales complexes</div>
+    <div class="ref-author">Office fédéral de la justice (OFJ)</div>
+    <div class="ref-info">Berne · 2025</div>
+    <a href="https://www.bj.admin.ch" target="_blank" class="ref-url">bj.admin.ch</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.bj.admin.ch" target="_blank" class="link-btn link-web">🔗 OFJ</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="legal" data-text="Donzallaz juge fédéral UDC liste noire parti pression">
+  <td class="ref-num">32</td>
+  <td>
+    <span class="ref-category cat-legal">Legal · Political</span>
+    <div class="ref-title">Yves Donzallaz — Federal judge placed on UDC blacklist for decisions contrary to party line</div>
+    <div class="ref-author">Swiss Federal Tribunal / SVP/UDC</div>
+    <div class="ref-info">2017–2019 · Documented political pressure on sitting judge</div>
+    <a href="https://www.nzz.ch" target="_blank" class="ref-url">nzz.ch — Documented case</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://www.nzz.ch" target="_blank" class="link-btn link-web">🔗 NZZ</a>
+    </div>
+  </td>
+</tr>
+
+<tr class="ref-row" data-cat="legal" data-text="gfs.bern sondage confiance justice suisse 2025">
+  <td class="ref-num">33</td>
+  <td>
+    <span class="ref-category cat-legal">Legal · Statistics</span>
+    <div class="ref-title">Sondage sur la confiance dans la justice suisse</div>
+    <div class="ref-author">gfs.bern</div>
+    <div class="ref-info">2025</div>
+    <a href="https://cockpit.gfsbern.ch" target="_blank" class="ref-url">cockpit.gfsbern.ch</a>
+  </td>
+  <td>
+    <div class="ref-links">
+      <a href="https://cockpit.gfsbern.ch" target="_blank" class="link-btn link-web">🔗 gfs.bern</a>
+    </div>
+  </td>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+<footer>
+  <span class="footer-name">Adinkra Publication</span>
+  <span class="footer-twi">"Se'wo were fi na wosankofa a yenkyi"</span>
+  <span class="footer-copy">© 2025 Adinkra Publication · The Swiss Illusion · All references verified</span>
+</footer>
+
+<script>
+function filterCat(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const rows = document.querySelectorAll('.ref-row');
+  let visible = 0;
+  rows.forEach(row => {
+    const match = cat === 'all' || row.dataset.cat === cat;
+    row.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  document.getElementById('visibleCount').textContent = visible;
+}
+
+function filterRefs() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const rows = document.querySelectorAll('.ref-row');
+  let visible = 0;
+  rows.forEach(row => {
+    const text = (row.dataset.text + ' ' + row.textContent).toLowerCase();
+    const match = text.includes(q);
+    row.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  document.getElementById('visibleCount').textContent = visible;
+}
+</script>
+
+</body>
+</html>
